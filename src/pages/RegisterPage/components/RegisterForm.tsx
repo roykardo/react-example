@@ -1,5 +1,5 @@
-import React, { ChangeEvent } from 'react'
-import axios from 'axios';
+import React, {ChangeEvent, FormEvent} from 'react'
+import axios, {AxiosResponse} from 'axios';
 
 interface Props {
     children: React.ReactNode
@@ -13,6 +13,7 @@ interface State {
         password: string
         confirmPassword: string
     }
+    errorMessage: string
 }
 
 class RegisterForm extends React.Component<Props, State> {
@@ -25,7 +26,8 @@ class RegisterForm extends React.Component<Props, State> {
                 email:'',
                 password: '',
                 confirmPassword: ''
-            }
+            },
+            errorMessage: ''
         }
     };
 
@@ -43,20 +45,27 @@ class RegisterForm extends React.Component<Props, State> {
         return true;
     };
 
-    submitHandler = (event: Event) => {
+    submitHandler = (event: FormEvent) => {
         event.preventDefault();
         axios.post('https://reqres.in/api/register', this.state.formControls)
-            .then(function (response) {
+            .then(function (response: AxiosResponse) {
                 console.log(response);
             })
-            .catch(function (error) {
-                console.log(error);
+            .catch((error) => {
+                this.setState({
+                    errorMessage: error.response.data.error
+                });
             });
     };
 
     render() {
         return (
             <form onSubmit={this.submitHandler}>
+                {this.state.errorMessage !== '' &&
+                <div className="alert alert-danger" role="alert">
+                    {this.state.errorMessage}
+                </div>
+                }
                 <div className="form-group">
                     <label>FirstName</label>
                     <input name="firstName"

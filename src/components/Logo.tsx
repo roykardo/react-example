@@ -1,11 +1,11 @@
 import React, {Component} from 'react'
-import logo from '../assets/images/logo2.png'
+import logo from '../assets/images/logo.png'
 
 class Logo extends Component{
     render() {
         return (
             <div>
-                <img src={logo} alt="Logo" className="w-50 center"/>
+                <img src={logo} alt="Logo" className="w-100 center"/>
             </div>
         );
     }

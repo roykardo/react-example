@@ -5,17 +5,21 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import Logo from "../../components/Logo";
+import {Link} from 'react-router-dom'
 
 class RegisterPage extends PureComponent {
     render() {
         return (
-            <div>
+            <div className="register">
                 <Container>
                     <Row className="justify-content-center">
-                        <Col lg={4}>
+                        <Col lg={6}>
                             <Logo></Logo>
                             <Card body className="mt-100">
-                                <RegisterForm></RegisterForm>
+                                <RegisterForm> </RegisterForm>
+                                <Card.Body className="text-center">
+                                    Already have an acocunt? <Link to="/">Sign in</Link>
+                                </Card.Body>
                             </Card>
                         </Col>
                     </Row>
