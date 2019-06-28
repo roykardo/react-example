@@ -1,8 +1,8 @@
 import React, {ChangeEvent, FormEvent} from 'react';
-import axios, {AxiosResponse} from 'axios';
+import axios from 'axios';
 
 interface Props {
-    children: React.ReactNode
+    history: History<any>
 }
 
 interface State {
@@ -10,7 +10,7 @@ interface State {
         email: string
         password: string
     },
-    errorMessage : string
+    errorMessage: string
 }
 
 class LoginForm extends React.Component<Props, State> {
@@ -42,13 +42,19 @@ class LoginForm extends React.Component<Props, State> {
     submitHandler = (event: FormEvent) => {
         event.preventDefault();
         axios.post('https://reqres.in/api/login', this.state.formControls)
-            .then((response: AxiosResponse) => {
-                console.log(response)
+            .then((response) => {
+                if (response.status === 200) {
+                    console.log(1)
+                    this.props.history.push('/dashboard')
+                }
             })
-            .catch( (error) =>  {
-                this.setState({
-                    errorMessage: error.response.data.error
-                });
+            .catch((error) => {
+                console.log(2)
+                if (error.response) {
+                    this.setState({
+                        errorMessage: error.response.data.error
+                    });
+                }
             })
     }
 
@@ -56,9 +62,9 @@ class LoginForm extends React.Component<Props, State> {
         return (
             <form onSubmit={this.submitHandler}>
                 {this.state.errorMessage !== '' &&
-                    <div className="alert alert-danger" role="alert">
-                        {this.state.errorMessage}
-                    </div>
+                <div className="alert alert-danger" role="alert">
+                    {this.state.errorMessage}
+                </div>
                 }
                 <div className="form-group">
                     <label>Email</label>

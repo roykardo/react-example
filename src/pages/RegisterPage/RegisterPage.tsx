@@ -18,7 +18,7 @@ class RegisterPage extends PureComponent {
                             <Card body className="mt-100">
                                 <RegisterForm> </RegisterForm>
                                 <Card.Body className="text-center">
-                                    Already have an acocunt? <Link to="/">Sign in</Link>
+                                    Already have an acocunt? <Link to="/login">Sign in</Link>
                                 </Card.Body>
                             </Card>
                         </Col>

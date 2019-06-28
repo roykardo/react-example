@@ -5,10 +5,11 @@ import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import LoginForm from "./components/LoginForm";
 import Logo from "../../components/Logo";
-import {Link} from 'react-router-dom'
+import {Link, RouteComponentProps} from 'react-router-dom'
 
-class LoginPage extends PureComponent {
+class LoginPage extends React.Component<RouteComponentProps> {
     render() {
+        const {history} = this.props;
         return (
             <div>
                 <Container>
@@ -16,7 +17,7 @@ class LoginPage extends PureComponent {
                         <Col lg={6}>
                             <Logo></Logo>
                             <Card body className="mt-100">
-                                <LoginForm></LoginForm>
+                                <LoginForm history={history}></LoginForm>
                                 <Card.Body className="text-center">
                                     Don't have acocunt? <Link to="/register">Sign Up</Link>
                                 </Card.Body>
@@ -25,7 +26,8 @@ class LoginPage extends PureComponent {
                     </Row>
                 </Container>
             </div>
-        );
+        )
+            ;
     }
 }
 

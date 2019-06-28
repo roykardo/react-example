@@ -32081,11 +32081,18 @@ class LoginForm extends _react.default.Component {
       event.preventDefault();
 
       _axios.default.post('https://reqres.in/api/login', this.state.formControls).then(response => {
-        console.log(response);
+        if (response.status === 200) {
+          console.log(1);
+          this.props.history.push('/dashboard');
+        }
       }).catch(error => {
-        this.setState({
-          errorMessage: error.response.data.error
-        });
+        console.log(2);
+
+        if (error.response) {
+          this.setState({
+            errorMessage: error.response.data.error
+          });
+        }
       });
     };
 
@@ -32171,7 +32178,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 
-var _react = _interopRequireWildcard(require("react"));
+var _react = _interopRequireDefault(require("react"));
 
 var _Container = _interopRequireDefault(require("react-bootstrap/Container"));
 
@@ -32189,10 +32196,11 @@ var _reactRouterDom = require("react-router-dom");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
-
-class LoginPage extends _react.PureComponent {
+class LoginPage extends _react.default.Component {
   render() {
+    const {
+      history
+    } = this.props;
     return _react.default.createElement("div", null, _react.default.createElement(_Container.default, null, _react.default.createElement(_Row.default, {
       className: "justify-content-center"
     }, _react.default.createElement(_Col.default, {
@@ -32200,7 +32208,9 @@ class LoginPage extends _react.PureComponent {
     }, _react.default.createElement(_Logo.default, null), _react.default.createElement(_Card.default, {
       body: true,
       className: "mt-100"
-    }, _react.default.createElement(_LoginForm.default, null), _react.default.createElement(_Card.default.Body, {
+    }, _react.default.createElement(_LoginForm.default, {
+      history: history
+    }), _react.default.createElement(_Card.default.Body, {
       className: "text-center"
     }, "Don't have acocunt? ", _react.default.createElement(_reactRouterDom.Link, {
       to: "/register"
@@ -32367,7 +32377,7 @@ class RegisterPage extends _react.PureComponent {
     }, _react.default.createElement(_RegisterForm.default, null, " "), _react.default.createElement(_Card.default.Body, {
       className: "text-center"
     }, "Already have an acocunt? ", _react.default.createElement(_reactRouterDom.Link, {
-      to: "/"
+      to: "/login"
     }, "Sign in")))))));
   }
 
@@ -32375,7 +32385,304 @@ class RegisterPage extends _react.PureComponent {
 
 var _default = RegisterPage;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./components/RegisterForm":"pages/RegisterPage/components/RegisterForm.tsx","react-bootstrap/Container":"../node_modules/react-bootstrap/Container.js","react-bootstrap/Row":"../node_modules/react-bootstrap/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/Col.js","react-bootstrap/Card":"../node_modules/react-bootstrap/Card.js","../../components/Logo":"components/Logo.tsx","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"App.tsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./components/RegisterForm":"pages/RegisterPage/components/RegisterForm.tsx","react-bootstrap/Container":"../node_modules/react-bootstrap/Container.js","react-bootstrap/Row":"../node_modules/react-bootstrap/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/Col.js","react-bootstrap/Card":"../node_modules/react-bootstrap/Card.js","../../components/Logo":"components/Logo.tsx","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"components/NavBar.tsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _reactRouterDom = require("react-router-dom");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+class NavBar extends _react.default.Component {
+  render() {
+    return _react.default.createElement("div", null, _react.default.createElement("nav", {
+      className: "navbar navbar-expand-lg navbar-dark bg-dark"
+    }, _react.default.createElement("a", {
+      className: "navbar-brand",
+      href: "#"
+    }, "React Example"), _react.default.createElement("div", {
+      className: "collapse navbar-collapse",
+      id: "navbarNavAltMarkup"
+    }, _react.default.createElement("div", {
+      className: "navbar-nav"
+    }, _react.default.createElement(_reactRouterDom.Link, {
+      className: "nav-item nav-link active",
+      to: "/dashboard"
+    }, "Dashboard"), _react.default.createElement(_reactRouterDom.Link, {
+      className: "nav-item nav-link active",
+      to: "/userlist"
+    }, "User Management"), _react.default.createElement(_reactRouterDom.Link, {
+      className: "nav-item nav-link",
+      to: "#"
+    }, "logout")))));
+  }
+
+}
+
+var _default = NavBar;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"pages/DashboardPage/DashboardPage.tsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireWildcard(require("react"));
+
+var _NavBar = _interopRequireDefault(require("../../components/NavBar"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = Object.defineProperty && Object.getOwnPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : {}; if (desc.get || desc.set) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } } newObj.default = obj; return newObj; } }
+
+class DashboardPage extends _react.PureComponent {
+  render() {
+    return _react.default.createElement("div", null, _react.default.createElement(_NavBar.default, null), _react.default.createElement("div", {
+      className: "container"
+    }, _react.default.createElement("div", {
+      className: "jumbotron"
+    }, _react.default.createElement("h1", {
+      className: "display-4"
+    }, "Hello, world!"), _react.default.createElement("p", {
+      className: "lead"
+    }, "This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information."), _react.default.createElement("p", null, "It uses utility classes for typography and spacing to space content out within the larger container."), _react.default.createElement("p", {
+      className: "lead"
+    }, _react.default.createElement("a", {
+      className: "btn btn-primary btn-lg",
+      href: "#",
+      role: "button"
+    }, "Learn more")))));
+  }
+
+}
+
+var _default = DashboardPage;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","../../components/NavBar":"components/NavBar.tsx"}],"pages/UserPage/components/UserList.tsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _axios = _interopRequireDefault(require("axios"));
+
+var _reactRouterDom = require("react-router-dom");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var __awaiter = void 0 && (void 0).__awaiter || function (thisArg, _arguments, P, generator) {
+  return new (P || (P = Promise))(function (resolve, reject) {
+    function fulfilled(value) {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function rejected(value) {
+      try {
+        step(generator["throw"](value));
+      } catch (e) {
+        reject(e);
+      }
+    }
+
+    function step(result) {
+      result.done ? resolve(result.value) : new P(function (resolve) {
+        resolve(result.value);
+      }).then(fulfilled, rejected);
+    }
+
+    step((generator = generator.apply(thisArg, _arguments || [])).next());
+  });
+};
+
+class UserList extends _react.default.Component {
+  constructor(props) {
+    super(props);
+
+    this.getUser = () => __awaiter(this, void 0, void 0, function* () {
+      const response = yield (0, _axios.default)({
+        method: 'GET',
+        url: 'https://reqres.in/api/users'
+      }).then(response => {
+        if (response.status === 200) {
+          return response.data;
+        }
+      }).catch(err => console.log(err));
+      this.setState({
+        data: {
+          users: response.data,
+          page: response.data.page,
+          per_page: response.data.per_page,
+          total: response.data.total,
+          total_pages: response.data.total_pages
+        }
+      });
+    });
+
+    this.state = {
+      data: {
+        users: [],
+        page: 0,
+        per_page: 0,
+        total: 0,
+        total_pages: 1
+      }
+    };
+  }
+
+  componentDidMount() {
+    this.getUser();
+  }
+
+  render() {
+    return _react.default.createElement("div", null, _react.default.createElement("table", {
+      className: "table table-hover"
+    }, _react.default.createElement("thead", null, _react.default.createElement(_reactRouterDom.Link, {
+      to: "/usercreate"
+    }, "Add User")), _react.default.createElement("thead", null, _react.default.createElement("tr", null, _react.default.createElement("th", {
+      scope: "col"
+    }, "First Name"), _react.default.createElement("th", {
+      scope: "col"
+    }, "Last Name"), _react.default.createElement("th", {
+      scope: "col"
+    }, "Email"), _react.default.createElement("th", {
+      scope: "col"
+    }, "Action"))), _react.default.createElement("tbody", null, this.state.data.users.length > 0 ? this.state.data.users.map(user => {
+      return _react.default.createElement("tr", null, _react.default.createElement("td", null, user.first_name), _react.default.createElement("td", null, user.last_name), _react.default.createElement("td", null, user.email), _react.default.createElement("td", null, _react.default.createElement(_reactRouterDom.Link, {
+        to: `/users/edit/${user.id}`
+      }, "Edit"), _react.default.createElement("button", null, "Delete")));
+    }) : _react.default.createElement("div", null, "Loading..."))));
+  }
+
+}
+
+var _default = UserList;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"pages/UserPage/UserPage.tsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _UserList = _interopRequireDefault(require("./components/UserList"));
+
+var _NavBar = _interopRequireDefault(require("../../components/NavBar"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+class UserPage extends _react.default.Component {
+  render() {
+    return _react.default.createElement("div", null, _react.default.createElement(_NavBar.default, null), _react.default.createElement("div", {
+      className: "container"
+    }, _react.default.createElement(_UserList.default, null)));
+  }
+
+}
+
+var _default = UserPage;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","./components/UserList":"pages/UserPage/components/UserList.tsx","../../components/NavBar":"components/NavBar.tsx"}],"pages/UserPage/components/UserCreate.tsx":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _axios = _interopRequireDefault(require("axios"));
+
+var _NavBar = _interopRequireDefault(require("../../../components/NavBar"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+class UserCreate extends _react.default.Component {
+  constructor(props) {
+    super(props);
+
+    this.changeHandler = event => {
+      const name = event.target.name;
+      const value = event.target.value;
+      this.setState({
+        data: Object.assign({}, this.state.data, {
+          [name]: value
+        })
+      });
+      return true;
+    };
+
+    this.submitHandler = event => {
+      event.preventDefault();
+
+      _axios.default.post('https://reqres.in/api/users', this.state.data).then(response => {
+        if (response.status === 201) {
+          this.props.history.push('/userlist');
+        }
+      });
+    };
+
+    this.state = {
+      data: {
+        name: '',
+        job: ''
+      }
+    };
+  }
+
+  render() {
+    return _react.default.createElement("form", {
+      onSubmit: this.submitHandler
+    }, _react.default.createElement(_NavBar.default, null), _react.default.createElement("div", {
+      className: "container"
+    }, _react.default.createElement("div", {
+      className: "form-group"
+    }, _react.default.createElement("label", null, "Name"), _react.default.createElement("input", {
+      type: "text",
+      name: "name",
+      placeholder: "Enter Name",
+      className: "form-control",
+      value: this.state.data.name,
+      onChange: this.changeHandler
+    })), _react.default.createElement("div", {
+      className: "form-group"
+    }, _react.default.createElement("label", null, "Jobs"), _react.default.createElement("input", {
+      type: "text",
+      name: "job",
+      placeholder: "Enter Job",
+      className: "form-control",
+      value: this.state.data.job,
+      onChange: this.changeHandler
+    })), _react.default.createElement("button", {
+      type: "submit",
+      className: "btn btn-primary btn-block"
+    }, "Submit")));
+  }
+
+}
+
+var _default = UserCreate;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","../../../components/NavBar":"components/NavBar.tsx"}],"App.tsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32393,6 +32700,12 @@ var _RegisterPage = _interopRequireDefault(require("./pages/RegisterPage/Registe
 
 var _reactRouterDom = require("react-router-dom");
 
+var _DashboardPage = _interopRequireDefault(require("./pages/DashboardPage/DashboardPage"));
+
+var _UserPage = _interopRequireDefault(require("./pages/UserPage/UserPage"));
+
+var _UserCreate = _interopRequireDefault(require("./pages/UserPage/components/UserCreate"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const App = () => {
@@ -32403,15 +32716,23 @@ const App = () => {
     path: "/",
     component: _LoginPage.default
   }), _react.default.createElement(_reactRouterDom.Route, {
-    exact: true,
     path: "/register",
     component: _RegisterPage.default
+  }), _react.default.createElement(_reactRouterDom.Route, {
+    path: "/dashboard",
+    component: _DashboardPage.default
+  }), _react.default.createElement(_reactRouterDom.Route, {
+    path: "/userlist",
+    component: _UserPage.default
+  }), _react.default.createElement(_reactRouterDom.Route, {
+    path: "/usercreate",
+    component: _UserCreate.default
   })));
 };
 
 var _default = App;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","./assets/style/custom.scss":"assets/style/custom.scss","./pages/LoginPage/LoginPage":"pages/LoginPage/LoginPage.tsx","./pages/RegisterPage/RegisterPage":"pages/RegisterPage/RegisterPage.tsx","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js"}],"serviceWorker.ts":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","./assets/style/custom.scss":"assets/style/custom.scss","./pages/LoginPage/LoginPage":"pages/LoginPage/LoginPage.tsx","./pages/RegisterPage/RegisterPage":"pages/RegisterPage/RegisterPage.tsx","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","./pages/DashboardPage/DashboardPage":"pages/DashboardPage/DashboardPage.tsx","./pages/UserPage/UserPage":"pages/UserPage/UserPage.tsx","./pages/UserPage/components/UserCreate":"pages/UserPage/components/UserCreate.tsx"}],"serviceWorker.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -32583,7 +32904,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53889" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49538" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
